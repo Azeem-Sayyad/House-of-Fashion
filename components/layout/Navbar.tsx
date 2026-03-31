@@ -70,7 +70,7 @@ function NavDropdown({ items }: { items: NavLink[] }) {
         className="
           bg-brand-white rounded-card shadow-card-hover
           border border-brand-blue-dark
-          py-2 min-w-[200px] overflow-hidden
+          py-2 min-w-50 overflow-hidden
         "
       >
         {items.map((item) => (
