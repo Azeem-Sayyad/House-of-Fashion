@@ -12,6 +12,8 @@ import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import BestSellers from "@/components/home/BestSellers";
 import FeaturedCollections from "@/components/home/FeaturedCollections";
+import BridalBanner from "@/components/home/BridalBanner";
+import WhyUs from "@/components/home/WhyUs";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -237,6 +239,12 @@ export default function RootLayout({
 
         {/* ── Best Sellers ── */}
         <BestSellers />
+
+        {/* ── Bridal Banner ── */}
+        <BridalBanner />
+
+        {/* ── Why Us ── */}
+        <WhyUs />
 
         {/* ── Footer ── */}
         <Footer />
