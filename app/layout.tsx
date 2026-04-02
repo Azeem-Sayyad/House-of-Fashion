@@ -9,6 +9,7 @@ import "./globals.css";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HeroSection from "@/components/home/HeroSection";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -217,20 +218,20 @@ export default function RootLayout({
 
         {/* ── Announcement Bar ── */}
         <AnnouncementBar />
-        {/* Uncomment once AnnouncementBar component is built in Step 6 */}
 
         {/* ── Navbar ── */}
         <Navbar />
-        {/* Uncomment once Navbar component is built in Step 6 */}
 
         {/* ── Main Content ── */}
         <main id="main-content">
           {children}
         </main>
 
+        {/* ── Hero Section ── */}
+        <HeroSection />
+
         {/* ── Footer ── */}
         <Footer />
-        {/* Uncomment once Footer component is built in Step 6 */}
 
         {/* ── WhatsApp Floating Button ── */}
         {/* <WhatsAppButton /> */}
