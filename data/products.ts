@@ -246,8 +246,8 @@ export const products: Product[] = [
         colourHex: "#005F60",
         stock: 1,
         images: [
-          { id: "img-003-a", url: "/images/products/paithani-green-front.jpg", alt: "Paithani Peacock Green - Front", isPrimary: true, angle: "front" },
-          { id: "img-003-b", url: "/images/products/paithani-green-closeup.jpg", alt: "Paithani Peacock Green - Close Up", isPrimary: false, angle: "closeup" },
+          { id: "img-003-a", url: "/images/products/paithani-green-front.webp", alt: "Paithani Peacock Green - Front", isPrimary: true, angle: "front" },
+          { id: "img-003-b", url: "/images/products/paithani-green-closeup.webp", alt: "Paithani Peacock Green - Close Up", isPrimary: false, angle: "closeup" },
         ],
       },
       {
@@ -723,6 +723,7 @@ export const products: Product[] = [
         stock: 7,
         images: [
           { id: "img-011-a", url: "/images/products/ivory-chanderi-office-front.jpg", alt: "Ivory Chanderi Office - Front", isPrimary: true, angle: "front" },
+          { id: "img-011-b", url: "/images/products/ivory-chanderi-office-back.jpg", alt: "Ivory Chanderi Office - Back", isPrimary: false, angle: "back" },
         ],
       },
     ],

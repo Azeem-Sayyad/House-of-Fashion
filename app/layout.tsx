@@ -10,6 +10,8 @@ import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import BestSellers from "@/components/home/BestSellers";
+import FeaturedCollections from "@/components/home/FeaturedCollections";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -223,12 +225,18 @@ export default function RootLayout({
         <Navbar />
 
         {/* ── Main Content ── */}
-        <main id="main-content">
+        {/* <main id="main-content">
           {children}
-        </main>
+        </main> */}
 
         {/* ── Hero Section ── */}
         <HeroSection />
+
+        {/* ── Featured Collections ── */}
+        <FeaturedCollections />
+
+        {/* ── Best Sellers ── */}
+        <BestSellers />
 
         {/* ── Footer ── */}
         <Footer />
