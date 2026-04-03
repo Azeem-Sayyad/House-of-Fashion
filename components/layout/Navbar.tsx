@@ -351,7 +351,7 @@ export default function Navbar() {
             aria-label="House of Fashion Boutique — Home"
           >
             <Image
-              src="/logo.png"
+              src="/logo.jpeg"
               alt="House of Fashion Boutique"
               width={140}
               height={48}
