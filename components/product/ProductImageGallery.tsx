@@ -75,7 +75,7 @@ function Lightbox({
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      className="fixed inset-0 z-9999 flex items-center justify-center"
       style={{ background: "rgba(10, 8, 6, 0.96)" }}
       onClick={onClose}
     >
@@ -114,7 +114,7 @@ function Lightbox({
         className="relative w-full max-w-3xl max-h-[85vh] mx-16"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative aspect-[3/4] rounded-card overflow-hidden">
+        <div className="relative aspect-3/4 rounded-card overflow-hidden">
           <Image
             src={image.url}
             alt={image.alt}
@@ -306,7 +306,7 @@ export default function ProductImageGallery({
               onClick={() => setActiveIndex(i)}
               aria-label={`View ${image.angle ? angleLabels[image.angle] : `image ${i + 1}`}`}
               className={`
-                relative flex-shrink-0 rounded-soft overflow-hidden
+                relative shrink-0 rounded-soft overflow-hidden
                 transition-all duration-200
                 ${
                   i === activeIndex

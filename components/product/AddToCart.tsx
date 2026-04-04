@@ -13,6 +13,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Product, ProductVariant, BlouseSize } from "@/lib/types";
 import { formatPrice } from "@/data/products";
+import { useCart } from "@/context/CartContext";
 
 // ─────────────────────────────────────────────────────────────
 // ICONS
@@ -41,7 +42,15 @@ const WhatsAppIcon = () => (
 );
 
 const CheckIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+  >
     <path d="M2.5 7l3.5 3.5L11.5 4" />
   </svg>
 );
@@ -59,7 +68,10 @@ const blouseSizes: BlouseSize[] = ["XS", "S", "M", "L", "XL", "XXL", "custom"];
 function StockIndicator({ stock }: { stock: number }) {
   if (stock === 0) {
     return (
-      <span className="flex items-center gap-1.5 text-xs font-body" style={{ color: "var(--color-gray)" }}>
+      <span
+        className="flex items-center gap-1.5 text-xs font-body"
+        style={{ color: "var(--color-gray)" }}
+      >
         <span className="w-2 h-2 rounded-full bg-brand-gray-light" />
         Out of stock
       </span>
@@ -67,8 +79,14 @@ function StockIndicator({ stock }: { stock: number }) {
   }
   if (stock <= 3) {
     return (
-      <span className="flex items-center gap-1.5 text-xs font-body" style={{ color: "#D97A97" }}>
-        <span className="w-2 h-2 rounded-full" style={{ background: "#D97A97" }} />
+      <span
+        className="flex items-center gap-1.5 text-xs font-body"
+        style={{ color: "#D97A97" }}
+      >
+        <span
+          className="w-2 h-2 rounded-full"
+          style={{ background: "#D97A97" }}
+        />
         Only {stock} left — order soon
       </span>
     );
@@ -98,24 +116,47 @@ export default function AddToCart({
   const [addedToCart, setAddedToCart] = useState(false);
   const [wantsStitching, setWantsStitching] = useState(false);
   const [selectedSize, setSelectedSize] = useState<BlouseSize | null>(null);
+  const { addItem } = useCart();
 
   const handleAddToCart = () => {
     if (!product.isAvailable || selectedVariant.stock === 0) return;
+
+    addItem({
+      id: `${product.id}-${selectedVariant.id}-${wantsStitching ? "stitched" : "plain"}`,
+      productId: product.id,
+      variantId: selectedVariant.id,
+      name: product.name,
+      image:
+        selectedVariant.images.find((img) => img.isPrimary)?.url ??
+        selectedVariant.images[0]?.url ??
+        "",
+      colour: selectedVariant.colour,
+      price:
+        product.price +
+        (wantsStitching && product.blouse.stitchingPrice
+          ? product.blouse.stitchingPrice
+          : 0),
+      quantity: 1,
+      blouseStitching: wantsStitching,
+      blouseSize: wantsStitching ? (selectedSize ?? undefined) : undefined,
+    });
+
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
-    // TODO: dispatch to cart context
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hi! I'm interested in ordering the *${product.name}* in ${selectedVariant.colour}.\n\nProduct: ${product.name}\nColour: ${selectedVariant.colour}\nPrice: ${formatPrice(product.price)}${wantsStitching ? `\nBlouse stitching: Yes (Size: ${selectedSize ?? "to be confirmed"})` : ""}\n\nCould you help me place the order?`
+    `Hi! I'm interested in ordering the *${product.name}* in ${selectedVariant.colour}.\n\nProduct: ${product.name}\nColour: ${selectedVariant.colour}\nPrice: ${formatPrice(product.price)}${wantsStitching ? `\nBlouse stitching: Yes (Size: ${selectedSize ?? "to be confirmed"})` : ""}\n\nCould you help me place the order?`,
   );
 
-  const totalPrice = product.price +
-    (wantsStitching && product.blouse.stitchingPrice ? product.blouse.stitchingPrice : 0);
+  const totalPrice =
+    product.price +
+    (wantsStitching && product.blouse.stitchingPrice
+      ? product.blouse.stitchingPrice
+      : 0);
 
   return (
     <div className="flex flex-col gap-6">
-
       {/* ── Colour Selector ── */}
       <div>
         <div className="flex items-center justify-between mb-3">
@@ -165,7 +206,13 @@ export default function AddToCart({
                   className="absolute inset-0 flex items-center justify-center rounded-full"
                   style={{ background: "rgba(255,255,255,0.5)" }}
                 >
-                  <svg width="20" height="20" viewBox="0 0 20 20" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    stroke="rgba(0,0,0,0.4)"
+                    strokeWidth="1.5"
+                  >
                     <line x1="4" y1="4" x2="16" y2="16" />
                   </svg>
                 </span>
@@ -202,7 +249,15 @@ export default function AddToCart({
                 `}
               >
                 {wantsStitching && (
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
                     <path d="M2 6l3 3 5-5" />
                   </svg>
                 )}
@@ -216,14 +271,20 @@ export default function AddToCart({
                 </p>
               </div>
             </div>
-            <span className="text-sm font-medium font-body shrink-0" style={{ color: "var(--color-pink-dark)" }}>
+            <span
+              className="text-sm font-medium font-body shrink-0"
+              style={{ color: "var(--color-pink-dark)" }}
+            >
               +{formatPrice(product.blouse.stitchingPrice ?? 0)}
             </span>
           </div>
 
           {/* Size selector — shown when stitching selected */}
           {wantsStitching && (
-            <div className="mt-4 pt-4 border-t border-brand-blue-dark" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="mt-4 pt-4 border-t border-brand-blue-dark"
+              onClick={(e) => e.stopPropagation()}
+            >
               <p className="text-xs font-medium text-brand-charcoal font-body mb-3">
                 Select Blouse Size
               </p>
@@ -313,7 +374,9 @@ export default function AddToCart({
           <button
             onClick={() => setWishlisted((prev) => !prev)}
             className="btn btn-outline py-3 text-sm gap-2"
-            aria-label={wishlisted ? "Remove from wishlist" : "Save to wishlist"}
+            aria-label={
+              wishlisted ? "Remove from wishlist" : "Save to wishlist"
+            }
           >
             <HeartIcon filled={wishlisted} />
             {wishlisted ? "Saved" : "Wishlist"}
@@ -343,9 +406,16 @@ export default function AddToCart({
           { icon: "🚚", label: "Free Shipping", sub: "On orders above ₹2,000" },
           { icon: "↩️", label: "Easy Returns", sub: "7-day return policy" },
           { icon: "🔒", label: "Secure Payment", sub: "UPI, Card, COD, EMI" },
-          { icon: "📦", label: "Packed with Care", sub: "Luxury gift packaging" },
+          {
+            icon: "📦",
+            label: "Packed with Care",
+            sub: "Luxury gift packaging",
+          },
         ].map((item) => (
-          <div key={item.label} className="flex items-start gap-2 p-3 rounded-soft bg-brand-blue-light">
+          <div
+            key={item.label}
+            className="flex items-start gap-2 p-3 rounded-soft bg-brand-blue-light"
+          >
             <span className="text-base shrink-0">{item.icon}</span>
             <div>
               <p className="text-[0.65rem] font-medium text-brand-charcoal font-body">
@@ -358,7 +428,6 @@ export default function AddToCart({
           </div>
         ))}
       </div>
-
     </div>
   );
 }

@@ -6,15 +6,12 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans, Great_Vibes } from "next/font/google";
 import "./globals.css";
+import PageContent from "@/components/layout/PageContent";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import HeroSection from "@/components/home/HeroSection";
-import BestSellers from "@/components/home/BestSellers";
-import FeaturedCollections from "@/components/home/FeaturedCollections";
-import BridalBanner from "@/components/home/BridalBanner";
-import WhyUs from "@/components/home/WhyUs";
-import Testimonials from "@/components/home/Testimonials";
+import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -43,7 +40,6 @@ const greatVibes = Great_Vibes({
   variable: "--font-script",
   display: "swap",
 });
-
 
 // ─────────────────────────────────────────────────────────────
 // 2. SITE METADATA
@@ -83,8 +79,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "House of Fashion Boutique",
-    description:
-      "Handwoven sarees from master weavers across India.",
+    description: "Handwoven sarees from master weavers across India.",
     images: ["/images/og-cover.jpg"],
   },
 
@@ -95,9 +90,7 @@ export const metadata: Metadata = {
       { url: "/icons/icon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
-    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
     shortcut: "/favicon.ico",
   },
 
@@ -127,7 +120,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 // ─────────────────────────────────────────────────────────────
 // 3. VIEWPORT CONFIGURATION
 // Separated from metadata as required by Next.js 14+
@@ -136,13 +128,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,         // Allow pinch-zoom for accessibility
+  maximumScale: 5, // Allow pinch-zoom for accessibility
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#E8F4F8" },
-    { media: "(prefers-color-scheme: dark)",  color: "#1E1E1E" },
+    { media: "(prefers-color-scheme: dark)", color: "#1E1E1E" },
   ],
 };
-
 
 // ─────────────────────────────────────────────────────────────
 // 4. JSON-LD STRUCTURED DATA
@@ -161,18 +152,16 @@ const structuredData = {
   image: "https://houseoffashionboutique.com/images/og-cover.jpg",
   priceRange: "₹₹₹",
   currenciesAccepted: "INR",
-  paymentAccepted: "UPI, Credit Card, Debit Card, Net Banking, Cash on Delivery",
+  paymentAccepted:
+    "UPI, Credit Card, Debit Card, Net Banking, Cash on Delivery",
   areaServed: "IN",
-  sameAs: [
-    "https://www.instagram.com/house_of_fashion_boutique121",
-  ],
+  sameAs: ["https://www.instagram.com/house_of_fashion_boutique121"],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
     availableLanguage: ["English", "Hindi"],
   },
 };
-
 
 // ─────────────────────────────────────────────────────────────
 // 5. ROOT LAYOUT COMPONENT
@@ -201,11 +190,14 @@ export default function RootLayout({
 
         {/* ── Preconnect for performance ── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
       </head>
 
       <body className="bg-brand-blue font-body text-brand-charcoal antialiased">
-
         {/* ── Skip to content — accessibility ── */}
         <a
           href="#main-content"
@@ -220,25 +212,25 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <CartProvider>
+          {/* ── Announcement Bar ── */}
+          {/* <AnnouncementBar /> */}
 
-        {/* ── Announcement Bar ── */}
-        <AnnouncementBar />
+          {/* ── Main Content ── */}
+          <PageContent>
+            {/* ── Navbar ── */}
+            <Navbar />
+            {children}
+          </PageContent>
 
-        {/* ── Navbar ── */}
-        <Navbar />
-
-        {/* ── Main Content ── */}
-        <main id="main-content">
-          {children}
-        </main>
-
-        {/* ── Footer ── */}
-        <Footer />
+          {/* ── Footer ── */}
+          <Footer />
+          <CartDrawer />
+        </CartProvider>
 
         {/* ── WhatsApp Floating Button ── */}
         {/* <WhatsAppButton /> */}
         {/* Uncomment once WhatsAppButton component is built */}
-
       </body>
     </html>
   );

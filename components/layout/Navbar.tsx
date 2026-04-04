@@ -10,45 +10,96 @@ import Link from "next/link";
 import Image from "next/image";
 import { navLinks } from "@/data/products";
 import { NavLink } from "@/lib/types";
+import { useCart } from "@/context/CartContext";
 
 // ─────────────────────────────────────────────────────────────
 // ICONS — inline SVG to avoid icon library dependency
 // ─────────────────────────────────────────────────────────────
 
 const SearchIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <circle cx="8.5" cy="8.5" r="5.5" />
     <path d="M15 15L18 18" />
   </svg>
 );
 
 const HeartIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M10 17s-7-4.35-7-9a4 4 0 0 1 7-2.67A4 4 0 0 1 17 8c0 4.65-7 9-7 9z" />
   </svg>
 );
 
 const BagIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M6 7V5a4 4 0 0 1 8 0v2" />
     <rect x="2" y="7" width="16" height="12" rx="2" />
   </svg>
 );
 
 const MenuIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 22 22"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <path d="M3 6h16M3 11h16M3 16h16" />
   </svg>
 );
 
 const CloseIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 22 22"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <path d="M4 4L18 18M18 4L4 18" />
   </svg>
 );
 
 const ChevronDown = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <path d="M3 5l4 4 4-4" />
   </svg>
 );
@@ -101,19 +152,15 @@ function NavDropdown({ items }: { items: NavLink[] }) {
 // MOBILE MENU — full-screen slide-in panel
 // ─────────────────────────────────────────────────────────────
 
-function MobileMenu({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
@@ -149,7 +196,11 @@ function MobileMenu({
               className="h-10 w-auto object-contain"
             />
           </Link>
-          <button onClick={onClose} aria-label="Close menu" className="btn-ghost p-2">
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            className="btn-ghost p-2"
+          >
             <CloseIcon />
           </button>
         </div>
@@ -163,7 +214,7 @@ function MobileMenu({
                   <button
                     onClick={() =>
                       setExpandedItem(
-                        expandedItem === link.label ? null : link.label
+                        expandedItem === link.label ? null : link.label,
                       )
                     }
                     className="
@@ -265,13 +316,7 @@ function MobileMenu({
 // SEARCH BAR — expandable inline search
 // ─────────────────────────────────────────────────────────────
 
-function SearchBar({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+function SearchBar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -314,8 +359,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Mock cart count — replace with real cart state later
-  const cartCount = 0;
+  const { itemCount, openDrawer } = useCart();
   const wishlistCount = 0;
 
   // Add shadow on scroll
@@ -334,7 +378,6 @@ export default function Navbar() {
     >
       <div className="container-site relative">
         <div className="flex items-center justify-between h-16 lg:h-20">
-
           {/* ── Mobile: Hamburger ── */}
           <button
             onClick={() => setMobileMenuOpen(true)}
@@ -412,35 +455,34 @@ export default function Navbar() {
             >
               <HeartIcon />
               {wishlistCount > 0 && (
-                <span className="
+                <span
+                  className="
                   absolute -top-0.5 -right-0.5
                   w-4 h-4 rounded-full bg-brand-pink
                   text-white text-[0.6rem] font-medium
                   flex items-center justify-center
-                ">
+                "
+                >
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
             {/* Cart */}
-            <Link
-              href="/cart"
-              aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
+            <button
+              onClick={openDrawer}
+              aria-label={`Cart${itemCount > 0 ? ` (${itemCount} items)` : ""}`}
               className="btn-ghost p-2 relative text-brand-charcoal-soft hover:text-brand-pink"
             >
               <BagIcon />
-              {cartCount > 0 && (
-                <span className="
-                  absolute -top-0.5 -right-0.5
-                  w-4 h-4 rounded-full bg-brand-pink
-                  text-white text-[0.6rem] font-medium
-                  flex items-center justify-center
-                ">
-                  {cartCount}
+              {itemCount > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand-pink text-white text-[0.6rem] font-medium flex items-center justify-center"
+                >
+                  {itemCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             {/* Desktop CTA */}
             <Link
