@@ -11,6 +11,7 @@ import Image from "next/image";
 import { navLinks } from "@/data/products";
 import { NavLink } from "@/lib/types";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 // ─────────────────────────────────────────────────────────────
 // ICONS — inline SVG to avoid icon library dependency
@@ -360,7 +361,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const { itemCount, openDrawer } = useCart();
-  const wishlistCount = 0;
+  const { itemCount: wishlistCount } = useWishlist();
 
   // Add shadow on scroll
   useEffect(() => {

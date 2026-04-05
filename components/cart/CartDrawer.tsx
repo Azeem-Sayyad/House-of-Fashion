@@ -80,7 +80,7 @@ function EmptyDrawer({ onClose }: { onClose: () => void }) {
       <h3 className="font-heading font-medium text-brand-charcoal text-xl mb-2">
         Your bag is empty
       </h3>
-      <p className="text-brand-gray font-body text-sm mb-8 max-w-[220px]">
+      <p className="text-brand-gray font-body text-sm mb-8 max-w-55">
         Time to find something beautiful to wear.
       </p>
       <Link

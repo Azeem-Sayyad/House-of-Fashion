@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/lib/types";
 import { formatPrice } from "@/data/products";
+import { useWishlist } from "@/context/WishlistContext";
 
 // ─────────────────────────────────────────────────────────────
 // ICONS
@@ -54,13 +55,16 @@ const BagIcon = () => (
 // ─────────────────────────────────────────────────────────────
 
 export default function ProductCard({ product }: { product: Product }) {
-  const [wishlisted, setWishlisted] = useState(false);
+  // const [wishlisted, setWishlisted] = useState(false);
+  const { toggleItem, isInWishlist } = useWishlist();
   const [addedToCart, setAddedToCart] = useState(false);
   const [hovering, setHovering] = useState(false);
 
   const defaultVariant =
     product.variants.find((v) => v.id === product.defaultVariantId) ??
     product.variants[0];
+
+  const wishlisted = isInWishlist(product.id, defaultVariant.id);
 
   const primaryImage =
     defaultVariant.images.find((img) => img.isPrimary) ??
@@ -74,11 +78,6 @@ export default function ProductCard({ product }: { product: Product }) {
     // TODO: dispatch to cart context
   };
 
-  const handleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setWishlisted((prev) => !prev);
-  };
-
   return (
     <div
       className="group relative bg-brand-white rounded-card shadow-product hover:shadow-product-hover transition-all duration-350 overflow-hidden flex flex-col"
@@ -88,7 +87,7 @@ export default function ProductCard({ product }: { product: Product }) {
       {/* ── Image Section ── */}
       <Link
         href={`/product/${product.slug}`}
-        className="block relative product-image-wrapper flex-shrink-0"
+        className="block relative product-image-wrapper shrink-0"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -123,10 +122,14 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* ── Badges ── */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.isNew && (
-            <span className="badge badge-dark text-[0.6rem] py-1 px-2.5">New</span>
+            <span className="badge badge-dark text-[0.6rem] py-1 px-2.5">
+              New
+            </span>
           )}
           {product.isBestseller && (
-            <span className="badge badge-pink text-[0.6rem] py-1 px-2.5">Bestseller</span>
+            <span className="badge badge-pink text-[0.6rem] py-1 px-2.5">
+              Bestseller
+            </span>
           )}
           {product.discount && (
             <span
@@ -145,7 +148,10 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* ── Wishlist button ── */}
         <button
-          onClick={handleWishlist}
+          onClick={(e) => {
+            e.preventDefault();
+            toggleItem(product.id, defaultVariant.id);
+          }}
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
           className="
             absolute top-3 right-3 z-10
@@ -187,7 +193,10 @@ export default function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* ── Product Info ── */}
-      <Link href={`/product/${product.slug}`} className="flex flex-col flex-1 p-4">
+      <Link
+        href={`/product/${product.slug}`}
+        className="flex flex-col flex-1 p-4"
+      >
         {/* Region + fabric */}
         <p className="text-[0.6rem] text-brand-gray font-body tracking-widest uppercase mb-1">
           {product.region} · {product.fabric}

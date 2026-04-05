@@ -12,6 +12,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/cart/CartDrawer";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -213,19 +214,21 @@ export default function RootLayout({
           Skip to main content
         </a>
         <CartProvider>
-          {/* ── Announcement Bar ── */}
-          {/* <AnnouncementBar /> */}
+          <WishlistProvider>
+            {/* ── Announcement Bar ── */}
+            {/* <AnnouncementBar /> */}
 
-          {/* ── Main Content ── */}
-          <PageContent>
-            {/* ── Navbar ── */}
-            <Navbar />
-            {children}
-          </PageContent>
+            {/* ── Main Content ── */}
+            <PageContent>
+              {/* ── Navbar ── */}
+              <Navbar />
+              {children}
+            </PageContent>
 
-          {/* ── Footer ── */}
-          <Footer />
-          <CartDrawer />
+            {/* ── Footer ── */}
+            <Footer />
+            <CartDrawer />
+          </WishlistProvider>
         </CartProvider>
 
         {/* ── WhatsApp Floating Button ── */}
