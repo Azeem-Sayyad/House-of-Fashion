@@ -6,11 +6,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  getProductBySlug,
-  getRelatedProducts,
-  products,
-} from "@/data/products";
+import { getProductBySlug, getRelatedProducts } from "@/lib/db/products";
+import { products } from "@/data/products"; // keep only for generateStaticParams for now
 import ProductImageGalleryWrapper from "@/components/product/ProductImageGalleryWrapper";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductInfo from "@/components/product/ProductInfo";
