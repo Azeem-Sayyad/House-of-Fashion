@@ -8,16 +8,12 @@
 // Has a hero banner, collection description, filtered grid.
 // ─────────────────────────────────────────────────────────────
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  getCollectionBySlug,
-  getProductsByCollection,
-  collections,
-} from "@/data/products";
-import { FilterState, SortOption } from "@/lib/types";
+import { collections } from "@/data/products";
+import { Collection, FilterState, Product, SortOption } from "@/lib/types";
 import ProductCard from "@/components/product/ProductCard";
 import {
   FilterSidebar,
@@ -31,13 +27,30 @@ import {
 // ─────────────────────────────────────────────────────────────
 
 const FilterIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <path d="M3 5h14M6 10h8M9 15h2" />
   </svg>
 );
 
 const ArrowRight = () => (
-  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M3 8h10M9 4l4 4-4 4" />
   </svg>
 );
@@ -73,7 +86,10 @@ function CollectionHero({
   productCount: number;
 }) {
   return (
-    <div className="relative rounded-card overflow-hidden mb-12" style={{ minHeight: "320px" }}>
+    <div
+      className="relative rounded-card overflow-hidden mb-12"
+      style={{ minHeight: "320px" }}
+    >
       {/* Background image */}
       <Image
         src={coverImage}
@@ -94,13 +110,27 @@ function CollectionHero({
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col justify-end h-full p-8 lg:p-12" style={{ minHeight: "320px" }}>
+      <div
+        className="relative z-10 flex flex-col justify-end h-full p-8 lg:p-12"
+        style={{ minHeight: "320px" }}
+      >
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-4">
           <ol className="flex items-center gap-2 text-[0.7rem] font-body text-white/50">
-            <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+            <li>
+              <Link href="/" className="hover:text-white transition-colors">
+                Home
+              </Link>
+            </li>
             <li aria-hidden="true">/</li>
-            <li><Link href="/collections" className="hover:text-white transition-colors">Collections</Link></li>
+            <li>
+              <Link
+                href="/collections"
+                className="hover:text-white transition-colors"
+              >
+                Collections
+              </Link>
+            </li>
             <li aria-hidden="true">/</li>
             <li className="text-white/80">{name}</li>
           </ol>
@@ -108,9 +138,7 @@ function CollectionHero({
 
         {/* Occasion badge */}
         {occasion && (
-          <span className="badge badge-pink mb-3 self-start">
-            {occasion}
-          </span>
+          <span className="badge badge-pink mb-3 self-start">{occasion}</span>
         )}
 
         {/* Name */}
@@ -214,16 +242,33 @@ export default function CollectionPage({
 }: {
   params: { slug: string };
 }) {
-  const collection = getCollectionBySlug(params.slug);
+  const [collection, setCollection] = useState<Collection | null>(null);
   if (!collection) notFound();
 
-  const collectionProducts = getProductsByCollection(collection.id);
+  const [collectionProducts, setCollectionProducts] = useState<Product[]>([]);
 
   const [filters, setFilters] = useState<FilterState>(defaultFilterState);
   const [sort, setSort] = useState<SortOption>("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const activeFilterCount = getActiveFilterCount(filters);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/products`)
+      .then((r) => r.json())
+      .then((res) => {
+        // filter to just this collection's products client-side
+        // OR add a /api/collections/[slug] route — your call
+        const all: Product[] = res.data;
+        const col = collections.find((c) => c.slug === params.slug);
+        if (!col) return;
+        setCollection(col as any);
+        setCollectionProducts(all.filter((p) => col.productIds.includes(p.id)));
+        setLoading(false);
+      });
+  }, [params.slug]);
 
   // Apply filters to this collection's products
   const filtered = useMemo(() => {
@@ -235,10 +280,11 @@ export default function CollectionPage({
       result = result.filter((p) => filters.weave.includes(p.weave));
     if (filters.occasion.length)
       result = result.filter((p) =>
-        p.occasion.some((o) => filters.occasion.includes(o))
+        p.occasion.some((o) => filters.occasion.includes(o)),
       );
     result = result.filter(
-      (p) => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
+      (p) =>
+        p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1],
     );
     if (filters.isNew) result = result.filter((p) => p.isNew);
     if (filters.isBestseller) result = result.filter((p) => p.isBestseller);
@@ -246,7 +292,10 @@ export default function CollectionPage({
 
     switch (sort) {
       case "newest":
-        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        result.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         break;
       case "price_asc":
         result.sort((a, b) => a.price - b.price);
@@ -255,7 +304,9 @@ export default function CollectionPage({
         result.sort((a, b) => b.price - a.price);
         break;
       case "bestselling":
-        result.sort((a, b) => (b.isBestseller ? 1 : 0) - (a.isBestseller ? 1 : 0));
+        result.sort(
+          (a, b) => (b.isBestseller ? 1 : 0) - (a.isBestseller ? 1 : 0),
+        );
         break;
     }
 
@@ -267,7 +318,6 @@ export default function CollectionPage({
   return (
     <div className="bg-brand-blue min-h-screen">
       <div className="container-site py-10 lg:py-14">
-
         {/* ── Collection Hero ── */}
         <CollectionHero
           name={collection.name}
@@ -294,8 +344,10 @@ export default function CollectionPage({
               )}
             </button>
             <p className="text-sm font-body text-brand-gray">
-              <span className="font-medium text-brand-charcoal">{filtered.length}</span>
-              {" "}of {collectionProducts.length} sarees
+              <span className="font-medium text-brand-charcoal">
+                {filtered.length}
+              </span>{" "}
+              of {collectionProducts.length} sarees
             </p>
           </div>
 
@@ -334,7 +386,10 @@ export default function CollectionPage({
                 <p className="text-brand-gray font-body text-sm mb-6">
                   Try clearing some filters.
                 </p>
-                <button onClick={handleReset} className="btn btn-primary text-sm px-6 py-2.5">
+                <button
+                  onClick={handleReset}
+                  className="btn btn-primary text-sm px-6 py-2.5"
+                >
                   Clear Filters
                 </button>
               </div>
@@ -350,7 +405,6 @@ export default function CollectionPage({
 
         {/* ── Other collections ── */}
         <OtherCollections currentSlug={params.slug} />
-
       </div>
 
       {/* Mobile filter drawer */}

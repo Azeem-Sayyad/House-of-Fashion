@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getProductBySlug, getRelatedProducts } from "@/lib/db/products";
 import { products } from "@/data/products"; // keep only for generateStaticParams for now
+import { Product } from "@/lib/types";
 import ProductImageGalleryWrapper from "@/components/product/ProductImageGalleryWrapper";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductInfo from "@/components/product/ProductInfo";
@@ -29,7 +30,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const product = getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug);
   if (!product) return { title: "Product Not Found" };
 
   return {
@@ -82,7 +83,7 @@ function Breadcrumb({ productName }: { productName: string }) {
 // JSON-LD — Product structured data for Google Shopping
 // ─────────────────────────────────────────────────────────────
 
-function ProductStructuredData({ product }: { product: ReturnType<typeof getProductBySlug> }) {
+function ProductStructuredData({ product }: { product: Product | null }) {
   if (!product) return null;
 
   const primaryImage = product.variants[0]?.images.find((i) => i.isPrimary)?.url;
@@ -131,15 +132,15 @@ function ProductStructuredData({ product }: { product: ReturnType<typeof getProd
 // PAGE COMPONENT
 // ─────────────────────────────────────────────────────────────
 
-export default function ProductPage({
+export default async function ProductPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const product = getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
-  const relatedProducts = getRelatedProducts(product);
+  const relatedProducts = await getRelatedProducts(product.relatedProductIds);
 
   return (
     <>

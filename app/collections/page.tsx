@@ -8,9 +8,9 @@
 // Filters live in sidebar (desktop) and drawer (mobile).
 // ─────────────────────────────────────────────────────────────
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { products, collections } from "@/data/products";
+import { collections } from "@/data/products";
 import { Product, SortOption, FilterState } from "@/lib/types";
 import ProductCard from "@/components/product/ProductCard";
 import {
@@ -25,13 +25,28 @@ import {
 // ─────────────────────────────────────────────────────────────
 
 const FilterIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+  >
     <path d="M3 5h14M6 10h8M9 15h2" />
   </svg>
 );
 
 const GridIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
     <rect x="3" y="3" width="6" height="6" rx="1" />
     <rect x="11" y="3" width="6" height="6" rx="1" />
     <rect x="3" y="11" width="6" height="6" rx="1" />
@@ -40,7 +55,14 @@ const GridIcon = () => (
 );
 
 const ListIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
     <rect x="3" y="3" width="6" height="6" rx="1" />
     <path d="M12 5h5M12 10h5M12 15h5" />
     <rect x="3" y="11" width="6" height="6" rx="1" />
@@ -65,7 +87,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
 function applyFilters(
   products: Product[],
   filters: FilterState,
-  sort: SortOption
+  sort: SortOption,
 ): Product[] {
   let result = [...products];
 
@@ -77,12 +99,11 @@ function applyFilters(
 
   if (filters.occasion.length)
     result = result.filter((p) =>
-      p.occasion.some((o) => filters.occasion.includes(o))
+      p.occasion.some((o) => filters.occasion.includes(o)),
     );
 
   result = result.filter(
-    (p) =>
-      p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
+    (p) => p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1],
   );
 
   if (filters.isNew) result = result.filter((p) => p.isNew);
@@ -92,7 +113,8 @@ function applyFilters(
   switch (sort) {
     case "newest":
       result.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       );
       break;
     case "price_asc":
@@ -102,7 +124,9 @@ function applyFilters(
       result.sort((a, b) => b.price - a.price);
       break;
     case "bestselling":
-      result.sort((a, b) => (b.isBestseller ? 1 : 0) - (a.isBestseller ? 1 : 0));
+      result.sort(
+        (a, b) => (b.isBestseller ? 1 : 0) - (a.isBestseller ? 1 : 0),
+      );
       break;
   }
 
@@ -120,7 +144,15 @@ function EmptyState({ onReset }: { onReset: () => void }) {
         className="w-16 h-16 rounded-full flex items-center justify-center mb-6"
         style={{ background: "var(--color-pink-light)" }}
       >
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-pink-dark)" strokeWidth="1.5" strokeLinecap="round">
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          stroke="var(--color-pink-dark)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        >
           <circle cx="14" cy="14" r="11" />
           <path d="M10 14h8M14 10v8" />
         </svg>
@@ -156,9 +188,10 @@ function CollectionPills({
         className={`
           px-4 py-2 rounded-pill text-xs font-body font-medium shrink-0
           border transition-all duration-200
-          ${!activeSlug
-            ? "bg-brand-charcoal text-white border-brand-charcoal"
-            : "border-brand-blue-dark text-brand-gray hover:border-brand-charcoal hover:text-brand-charcoal"
+          ${
+            !activeSlug
+              ? "bg-brand-charcoal text-white border-brand-charcoal"
+              : "border-brand-blue-dark text-brand-gray hover:border-brand-charcoal hover:text-brand-charcoal"
           }
         `}
       >
@@ -171,9 +204,10 @@ function CollectionPills({
           className={`
             px-4 py-2 rounded-pill text-xs font-body font-medium shrink-0
             border transition-all duration-200
-            ${activeSlug === col.slug
-              ? "bg-brand-pink text-white border-brand-pink"
-              : "border-brand-blue-dark text-brand-gray hover:border-brand-pink hover:text-brand-charcoal"
+            ${
+              activeSlug === col.slug
+                ? "bg-brand-pink text-white border-brand-pink"
+                : "border-brand-blue-dark text-brand-gray hover:border-brand-pink hover:text-brand-charcoal"
             }
           `}
         >
@@ -193,22 +227,35 @@ export default function CollectionsPage() {
   const [sort, setSort] = useState<SortOption>("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [gridCols, setGridCols] = useState<2 | 3>(3);
-  const [activeCollectionSlug, setActiveCollectionSlug] = useState<string | null>(null);
+  const [activeCollectionSlug, setActiveCollectionSlug] = useState<
+    string | null
+  >(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const activeFilterCount = getActiveFilterCount(filters);
 
+  useEffect(() => {
+    fetch("/api/products")
+      .then((r) => r.json())
+      .then((res) => {
+        setAllProducts(res.data);
+        setLoading(false);
+      });
+  }, []);
+
   // Base product pool — filtered by collection pill first
   const baseProducts = useMemo(() => {
-    if (!activeCollectionSlug) return products;
+    if (!activeCollectionSlug) return allProducts;
     const col = collections.find((c) => c.slug === activeCollectionSlug);
-    if (!col) return products;
-    return products.filter((p) => col.productIds.includes(p.id));
+    if (!col) return allProducts;
+    return allProducts.filter((p) => col.productIds.includes(p.id));
   }, [activeCollectionSlug]);
 
   // Then apply full filter + sort
   const filtered = useMemo(
     () => applyFilters(baseProducts, filters, sort),
-    [baseProducts, filters, sort]
+    [baseProducts, filters, sort],
   );
 
   const handleReset = () => {
@@ -219,7 +266,6 @@ export default function CollectionsPage() {
   return (
     <div className="bg-brand-blue min-h-screen">
       <div className="container-site py-10 lg:py-14">
-
         {/* ── Page Header ── */}
         <div className="mb-8">
           <p className="section-label mb-2">Browse Our Range</p>
@@ -264,8 +310,10 @@ export default function CollectionsPage() {
             </button>
 
             <p className="text-sm font-body text-brand-gray">
-              <span className="font-medium text-brand-charcoal">{filtered.length}</span>
-              {" "}sarees
+              <span className="font-medium text-brand-charcoal">
+                {filtered.length}
+              </span>{" "}
+              sarees
             </p>
           </div>
 
@@ -318,7 +366,6 @@ export default function CollectionsPage() {
 
         {/* ── Main Layout: sidebar + grid ── */}
         <div className="flex gap-8 items-start">
-
           {/* Desktop sidebar */}
           <FilterSidebar
             filters={filters}
@@ -327,27 +374,20 @@ export default function CollectionsPage() {
           />
 
           {/* Product grid */}
-          <div className="flex-1 min-w-0">
-            {filtered.length === 0 ? (
-              <EmptyState onReset={handleReset} />
-            ) : (
-              <div
-                className={`
-                  grid gap-5
-                  ${gridCols === 3
-                    ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-                    : "grid-cols-1 sm:grid-cols-2"
-                  }
-                `}
-              >
-                {filtered.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            )}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-32">
+              <div className="w-8 h-8 rounded-full border-2 border-brand-pink border-t-transparent animate-spin" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <EmptyState onReset={handleReset} />
+          ) : (
+            <div className={`grid gap-5 ...`}>
+              {filtered.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
-
       </div>
 
       {/* Mobile filter drawer */}
