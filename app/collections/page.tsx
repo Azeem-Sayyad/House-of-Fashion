@@ -239,6 +239,7 @@ export default function CollectionsPage() {
     fetch("/api/products")
       .then((r) => r.json())
       .then((res) => {
+        console.log("API response:", res);
         setAllProducts(res.data);
         setLoading(false);
       });

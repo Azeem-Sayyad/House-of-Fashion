@@ -9,7 +9,6 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState, useMemo, useEffect } from "react";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { collections } from "@/data/products";
@@ -243,28 +242,21 @@ export default function CollectionPage({
   params: { slug: string };
 }) {
   const [collection, setCollection] = useState<Collection | null>(null);
-  if (!collection) notFound();
-
   const [collectionProducts, setCollectionProducts] = useState<Product[]>([]);
-
   const [filters, setFilters] = useState<FilterState>(defaultFilterState);
   const [sort, setSort] = useState<SortOption>("newest");
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const activeFilterCount = getActiveFilterCount(filters);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/products`)
+    fetch("/api/products")
       .then((r) => r.json())
       .then((res) => {
-        // filter to just this collection's products client-side
-        // OR add a /api/collections/[slug] route — your call
         const all: Product[] = res.data;
         const col = collections.find((c) => c.slug === params.slug);
         if (!col) return;
-        setCollection(col as any);
+        setCollection(col as Collection);
         setCollectionProducts(all.filter((p) => col.productIds.includes(p.id)));
         setLoading(false);
       });
@@ -314,6 +306,32 @@ export default function CollectionPage({
   }, [collectionProducts, filters, sort]);
 
   const handleReset = () => setFilters(defaultFilterState);
+
+  if (loading) {
+    return (
+      <div className="bg-brand-blue min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-brand-pink border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  if (!collection) {
+    return (
+      <div className="bg-brand-blue min-h-screen flex items-center justify-center text-center">
+        <div>
+          <h2 className="font-heading font-medium text-brand-charcoal text-2xl mb-3">
+            Collection not found
+          </h2>
+          <Link
+            href="/collections"
+            className="btn btn-primary text-sm px-6 py-3"
+          >
+            Browse All Collections
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-brand-blue min-h-screen">
