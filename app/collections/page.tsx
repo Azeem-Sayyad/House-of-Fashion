@@ -251,7 +251,7 @@ export default function CollectionsPage() {
     const col = collections.find((c) => c.slug === activeCollectionSlug);
     if (!col) return allProducts;
     return allProducts.filter((p) => col.productIds.includes(p.id));
-  }, [activeCollectionSlug]);
+  }, [activeCollectionSlug, allProducts]);
 
   // Then apply full filter + sort
   const filtered = useMemo(
@@ -382,7 +382,13 @@ export default function CollectionsPage() {
           ) : filtered.length === 0 ? (
             <EmptyState onReset={handleReset} />
           ) : (
-            <div className={`grid gap-5 ...`}>
+            <div
+              className={
+                gridCols === 3
+                  ? "grid gap-5 grid-cols-2 lg:grid-cols-3"
+                  : "grid gap-5 grid-cols-1 sm:grid-cols-2"
+              }
+            >
               {filtered.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
