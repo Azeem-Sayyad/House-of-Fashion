@@ -140,18 +140,18 @@ function HeroSection() {
     >
       {/* Decorative orbs */}
       <div
-        className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none opacity-25"
+        className="absolute -top-32 -right-32 w-125 h-125 rounded-full pointer-events-none opacity-25"
         style={{ background: "radial-gradient(circle, var(--color-pink) 0%, transparent 70%)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full pointer-events-none opacity-20"
+        className="absolute -bottom-24 -left-24 w-100 h-100 rounded-full pointer-events-none opacity-20"
         style={{ background: "radial-gradient(circle, var(--color-blue-dark) 0%, transparent 70%)" }}
         aria-hidden="true"
       />
 
       <div className="container-site relative z-10 py-24">
-        <div className="max-w-[680px]">
+        <div className="max-w-170">
 
           {/* Eyebrow */}
           <div
@@ -472,7 +472,7 @@ function PromiseSection() {
     >
       {/* Pink orb */}
       <div
-        className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none opacity-10"
+        className="absolute top-0 right-0 w-100 h-100 rounded-full pointer-events-none opacity-10"
         style={{ background: "radial-gradient(circle, var(--color-pink) 0%, transparent 70%)" }}
         aria-hidden="true"
       />

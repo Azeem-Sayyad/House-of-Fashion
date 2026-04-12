@@ -56,8 +56,8 @@ const InstagramIcon = () => (
 
 const WhatsAppIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.139.566 4.148 1.55 5.888L0 24l6.304-1.524A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.034-1.388l-.36-.214-3.742.904.944-3.641-.235-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.139.566 4.148 1.55 5.888L0 24l6.304-1.524A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.034-1.388l-.36-.214-3.742.904.944-3.641-.235-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
   </svg>
 );
 
@@ -69,7 +69,8 @@ function NewsletterForm() {
   return (
     <div>
       <p className="text-sm text-brand-gray mb-3 font-body">
-        New arrivals, exclusive offers, styling inspiration — straight to your inbox.
+        New arrivals, exclusive offers, styling inspiration — straight to your
+        inbox.
       </p>
       <div className="flex gap-2">
         <input
@@ -107,10 +108,12 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <h4 className="
+      <h4
+        className="
         text-white text-xs font-medium tracking-widest uppercase
         font-body mb-4
-      ">
+      "
+      >
         {title}
       </h4>
       <ul className="space-y-2.5">
@@ -119,7 +122,11 @@ function FooterColumn({
             <Link
               href={link.href}
               target={link.href.startsWith("https") ? "_blank" : undefined}
-              rel={link.href.startsWith("https") ? "noopener noreferrer" : undefined}
+              rel={
+                link.href.startsWith("https")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
               className="
                 text-brand-gray hover:text-brand-pink
                 text-sm font-body transition-colors duration-200
@@ -142,11 +149,13 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-charcoal text-brand-gray">
-
+    <footer
+      className="bg-brand-charcoal text-brand-gray"
+      style={{ backgroundColor: "#1E1E1E" }}
+    >
       {/* ── Top Strip — Social proof ── */}
-      <div className="border-b border-white/10">
-        <div className="container-site py-8">
+      <div className="border-b border-white/10" style={{ backgroundColor: "#1E1E1E" }}>
+        <div className="container-site py-8" style={{ backgroundColor: "#1E1E1E" }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
               { value: "500+", label: "Handwoven Sarees" },
@@ -170,7 +179,6 @@ export default function Footer() {
       {/* ── Main Footer Content ── */}
       <div className="container-site py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
-
           {/* ── Brand Column ── */}
           <div className="lg:col-span-2">
             <Link href="/" aria-label="House of Fashion Boutique — Home">
@@ -235,19 +243,24 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom Bar ── */}
-      <div className="border-t border-white/10">
+      <div className="border-t border-white/10" style={{ backgroundColor: "#1E1E1E" }}>
         <div className="container-site py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-
             {/* Copyright */}
             <p className="text-xs text-brand-gray font-body text-center sm:text-left">
               © {currentYear} House of Fashion Boutique. All rights reserved.
               <span className="mx-2 opacity-30">·</span>
-              <Link href="/privacy" className="hover:text-brand-pink transition-colors">
+              <Link
+                href="/privacy"
+                className="hover:text-brand-pink transition-colors"
+              >
                 Privacy Policy
               </Link>
               <span className="mx-2 opacity-30">·</span>
-              <Link href="/terms" className="hover:text-brand-pink transition-colors">
+              <Link
+                href="/terms"
+                className="hover:text-brand-pink transition-colors"
+              >
                 Terms of Service
               </Link>
             </p>
@@ -271,11 +284,9 @@ export default function Footer() {
                 </span>
               ))}
             </div>
-
           </div>
         </div>
       </div>
-
     </footer>
   );
 }
