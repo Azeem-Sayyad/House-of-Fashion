@@ -68,7 +68,7 @@ const WhatsAppIcon = () => (
 function NewsletterForm() {
   return (
     <div>
-      <p className="text-sm text-brand-gray mb-3 font-body">
+      <p className="text-sm mb-3 font-body" style={{ color: "#8A8A8A" }}>
         New arrivals, exclusive offers, styling inspiration — straight to your
         inbox.
       </p>
@@ -88,7 +88,7 @@ function NewsletterForm() {
           Subscribe
         </button>
       </div>
-      <p className="text-[0.7rem] text-brand-gray mt-2 font-body">
+      <p className="text-[0.7rem] mt-2 font-body" style={{ color: "#8A8A8A" }}>
         No spam. Unsubscribe anytime. We promise.
       </p>
     </div>
@@ -128,9 +128,9 @@ function FooterColumn({
                   : undefined
               }
               className="
-                text-brand-gray hover:text-brand-pink
-                text-sm font-body transition-colors duration-200
+                hover:text-brand-pink text-sm font-body transition-colors duration-200
               "
+              style={{ color: "#8A8A8A" }}
             >
               {link.label}
             </Link>
@@ -167,7 +167,7 @@ export default function Footer() {
                 <div className="text-2xl font-heading font-medium text-white mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs font-body tracking-wide text-brand-gray">
+                <div className="text-xs font-body tracking-wide" style={{ color: "#8A8A8A" }}>
                   {stat.label}
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function Footer() {
               />
             </Link>
 
-            <p className="text-sm text-brand-gray font-body leading-relaxed mb-6 max-w-xs">
+            <p className="text-sm font-body leading-relaxed mb-6 max-w-xs" style={{ color: "#8A8A8A" }}>
               Handcrafted sarees from master weavers across India — Banarasi,
               Kanjeevaram, Paithani, and more. Every saree tells a story worth
               wearing.
@@ -210,7 +210,7 @@ export default function Footer() {
                   hover:bg-brand-pink hover:text-white
                   transition-all duration-250
                 "
-                style={{ background: "rgba(255,255,255,0.08)" }}
+                style={{ background: "#8A8A8A" }}
               >
                 <InstagramIcon />
               </a>
@@ -225,7 +225,7 @@ export default function Footer() {
                   hover:bg-[#25D366] hover:text-white
                   transition-all duration-250
                 "
-                style={{ background: "rgba(255,255,255,0.08)" }}
+                style={{ background: "#8A8A8A" }}
               >
                 <WhatsAppIcon />
               </a>
@@ -247,7 +247,7 @@ export default function Footer() {
         <div className="container-site py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Copyright */}
-            <p className="text-xs text-brand-gray font-body text-center sm:text-left">
+            <p className="text-xs font-body text-center sm:text-left" style={{ color: "#8A8A8A" }}>
               © {currentYear} House of Fashion Boutique. All rights reserved.
               <span className="mx-2 opacity-30">·</span>
               <Link
@@ -278,7 +278,7 @@ export default function Footer() {
                     text-brand-gray border border-white/10
                     font-body tracking-wide
                   "
-                  style={{ background: "rgba(255,255,255,0.05)" }}
+                  style={{ background: "#8A8A8A" }}
                 >
                   {method.label}
                 </span>
