@@ -169,7 +169,8 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
       {/* ── Backdrop ── */}
       {open && (
         <div
-          className="overlay lg:hidden"
+          className="fixed inset-0 lg:hidden"
+          style={{ background: "rgba(30, 30, 30, 0.45)", zIndex: 9998 }}
           onClick={onClose}
           aria-hidden="true"
         />
@@ -178,12 +179,13 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
       {/* ── Slide-in Panel ── */}
       <div
         className={`
-          fixed inset-y-0 left-0 z-modal w-[85vw] max-w-sm
+          fixed inset-y-0 left-0 w-[85vw] max-w-sm
           bg-brand-white flex flex-col
           transition-transform duration-350 ease-smooth
           ${open ? "translate-x-0" : "-translate-x-full"}
           lg:hidden
         `}
+        style={{ zIndex: 9999 }}
         aria-label="Mobile navigation"
       >
         {/* Header */}
@@ -477,9 +479,7 @@ export default function Navbar() {
             >
               <BagIcon />
               {itemCount > 0 && (
-                <span
-                  className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand-pink text-white text-[0.6rem] font-medium flex items-center justify-center"
-                >
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand-pink text-white text-[0.6rem] font-medium flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
