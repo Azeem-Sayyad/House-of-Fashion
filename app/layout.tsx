@@ -13,6 +13,7 @@ import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/cart/CartDrawer";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { UIProvider } from "@/context/UIContext";
 
 // ─────────────────────────────────────────────────────────────
 // 1. FONT CONFIGURATION
@@ -215,19 +216,21 @@ export default function RootLayout({
         </a>
         <CartProvider>
           <WishlistProvider>
-            {/* ── Announcement Bar ── */}
-            {/* <AnnouncementBar /> */}
+            <UIProvider>
+              {/* ── Announcement Bar ── */}
+              {/* <AnnouncementBar /> */}
 
-            {/* ── Main Content ── */}
-            <PageContent>
-              {/* ── Navbar ── */}
-              <Navbar />
-              {children}
-            </PageContent>
+              {/* ── Main Content ── */}
+              <PageContent>
+                {/* ── Navbar ── */}
+                <Navbar />
+                {children}
+              </PageContent>
 
-            {/* ── Footer ── */}
-            <Footer />
-            <CartDrawer />
+              {/* ── Footer ── */}
+              <Footer />
+              <CartDrawer />
+            </UIProvider>
           </WishlistProvider>
         </CartProvider>
 

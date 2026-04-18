@@ -12,6 +12,7 @@ import { navLinks } from "@/data/products";
 import { NavLink } from "@/lib/types";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useUI } from "@/context/UIContext";
 
 // ─────────────────────────────────────────────────────────────
 // ICONS — inline SVG to avoid icon library dependency
@@ -358,7 +359,7 @@ function SearchBar({ open, onClose }: { open: boolean; onClose: () => void }) {
 // ─────────────────────────────────────────────────────────────
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { mobileMenuOpen, setMobileMenuOpen } = useUI();
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
